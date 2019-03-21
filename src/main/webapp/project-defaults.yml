@@ -1,0 +1,12 @@
+thorntail:
+  http:
+    #port: 10240
+thorntail:
+  datasources:
+    data-sources:
+      articleDS:
+        driver-name: h2
+        #connection-url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+        connection-url: jdbc:h2:file:./articles
+        user-name: sa
+        password: sa
