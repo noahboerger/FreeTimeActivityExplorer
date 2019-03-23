@@ -23,15 +23,18 @@ public class SearchLabel {
 	private double temperatureMin;
 	private double temperatueMax;
 
+	private boolean rainAllowed;
+
 	public SearchLabel() {
 		super();
 	}
 
-	public SearchLabel(String searchLabel, double temperatureMin, double temperatueMax) {
+	public SearchLabel(String searchLabel, double temperatureMin, double temperatueMax, boolean rainAllowed) {
 		super();
 		this.searchLabel = searchLabel;
 		this.temperatureMin = temperatureMin;
 		this.temperatueMax = temperatueMax;
+		this.rainAllowed = rainAllowed;
 	}
 
 	public String getSearchLabel() {
@@ -58,10 +61,18 @@ public class SearchLabel {
 		this.temperatueMax = temperatueMax;
 	}
 
+	public boolean isRainAllowed() {
+		return rainAllowed;
+	}
+
+	public void setRainAllowed(boolean rainAllowed) {
+		this.rainAllowed = rainAllowed;
+	}
+
 	@Override
 	public String toString() {
 		return "SearchLabel[id=" + id + " searchLabel=" + searchLabel + " tempMin=" + temperatureMin + " tempMax="
-				+ temperatueMax + "]";
+				+ temperatueMax + "rainAllowed=" + rainAllowed + "]";
 	}
 
 }

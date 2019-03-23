@@ -1,4 +1,4 @@
-package org.dhbw.mosbach.ai.freetimeactivityexplorer.places.search;
+package org.dhbw.mosbach.ai.freetimeactivityexplorer.apis.places.search;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 
 //TODO:  get coords of pointsof interest
-public class PlacesService {
+public class GooglePlacesAPI {
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
 
     private static final String TYPE_AUTOCOMPLETE = "/autocomplete";

@@ -13,7 +13,7 @@ import org.dhbw.mosbach.ai.freetimeactivityexplorer.model.SearchLabel;
 
 
 
-public interface IFreeTimeActivityFinderService {
+public interface IFreeTimeActivityExplorerService {
 
 	@GET
 	@Path("/findactivity/{village}")

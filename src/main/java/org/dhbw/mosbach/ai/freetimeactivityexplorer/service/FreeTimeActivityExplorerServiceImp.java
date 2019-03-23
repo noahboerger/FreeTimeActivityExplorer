@@ -13,7 +13,7 @@ import org.dhbw.mosbach.ai.freetimeactivityexplorer.model.SearchLabel;
 import org.dhbw.mosbach.ai.freetimeactivityexplorer.process.ActivityFinder;
 
 @Path("/freetimeactivityexplorer")
-public class FreeTimeActivityFinderServiceImp implements IFreeTimeActivityFinderService {
+public class FreeTimeActivityExplorerServiceImp implements IFreeTimeActivityExplorerService {
 	
 	
 	

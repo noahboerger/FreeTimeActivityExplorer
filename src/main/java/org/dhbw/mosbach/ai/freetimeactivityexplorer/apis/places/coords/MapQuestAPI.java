@@ -1,4 +1,4 @@
-package org.dhbw.mosbach.ai.freetimeactivityexplorer.places.coords;
+package org.dhbw.mosbach.ai.freetimeactivityexplorer.apis.places.coords;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,7 +9,7 @@ import java.net.URL;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class CoordsToVillage {
+public class MapQuestAPI {
 	
 	private final static String BASE_URL = "http://www.mapquestapi.com/geocoding/v1/address";
 	

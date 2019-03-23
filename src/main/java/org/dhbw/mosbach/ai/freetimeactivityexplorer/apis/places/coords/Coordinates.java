@@ -1,4 +1,4 @@
-package org.dhbw.mosbach.ai.freetimeactivityexplorer.places.coords;
+package org.dhbw.mosbach.ai.freetimeactivityexplorer.apis.places.coords;
 
 public class Coordinates {
 	double latitude;
