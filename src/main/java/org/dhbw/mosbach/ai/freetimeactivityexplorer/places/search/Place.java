@@ -1,4 +1,4 @@
-package org.dhbw.mosbach.ai.freetimeactivityexplorer.placessearch;
+package org.dhbw.mosbach.ai.freetimeactivityexplorer.places.search;
 
 public class Place {
 

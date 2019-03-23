@@ -1,4 +1,4 @@
-package org.dhbw.mosbach.ai.freetimeactivityexplorer.placessearch;
+package org.dhbw.mosbach.ai.freetimeactivityexplorer.places.search;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,11 +12,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-/**
- * @author Fabian Pohlink und Noah Börger
- */
 
-//TODO: Search with citynames not with coords, get coords of pointsof interest
+//TODO:  get coords of pointsof interest
 public class PlacesService {
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
 
@@ -26,7 +23,6 @@ public class PlacesService {
 
     private static final String OUT_JSON = "/json";
 
-    // KEY!
     private static final String API_KEY = "AIzaSyA0eRPuS8wbevlN8bGeGZSZYAeRiZdVeE0";
 
     public static ArrayList<Place> autocomplete(String input) {
@@ -64,11 +60,9 @@ public class PlacesService {
         }
 
         try {
-            // Create a JSON object hierarchy from the results
             JSONObject jsonObj = new JSONObject(jsonResults.toString());
             JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
 
-            // Extract the Place descriptions from the results
             resultList = new ArrayList<Place>(predsJsonArray.length());
             for (int i = 0; i < predsJsonArray.length(); i++) {
                 Place place = new Place();
@@ -120,11 +114,9 @@ public class PlacesService {
         }
 
         try {
-            // Create a JSON object hierarchy from the results
             JSONObject jsonObj = new JSONObject(jsonResults.toString());
             JSONArray predsJsonArray = jsonObj.getJSONArray("results");
 
-            // Extract the Place descriptions from the results
             resultList = new ArrayList<Place>(predsJsonArray.length());
             for (int i = 0; i < predsJsonArray.length(); i++) {
                 Place place = new Place();
@@ -154,7 +146,6 @@ public class PlacesService {
             conn = (HttpURLConnection) url.openConnection();
             InputStreamReader in = new InputStreamReader(conn.getInputStream());
 
-            // Load the results into a StringBuilder
             int read;
             char[] buff = new char[1024];
             while ((read = in.read(buff)) != -1) {
@@ -174,7 +165,6 @@ public class PlacesService {
 
         Place place = null;
         try {
-            // Create a JSON object hierarchy from the results
             JSONObject jsonObj = new JSONObject(jsonResults.toString()).getJSONObject("result");
 
             place = new Place();

@@ -16,7 +16,7 @@ import org.dhbw.mosbach.ai.freetimeactivityexplorer.model.SearchLabel;
 public interface IFreeTimeActivityFinderService {
 
 	@GET
-	@Path("/{village}")
+	@Path("/findactivity/{village}")
 	@Produces("text/json")
 	Activity[] findActivity(@PathParam("village") String village);
 	
