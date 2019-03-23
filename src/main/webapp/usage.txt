@@ -1,1 +1,1 @@
-ArticleService is now ready on port ${thorntail.http.port}.
+FreeTimeActivityExplorer is now ready on port ${thorntail.http.port}.

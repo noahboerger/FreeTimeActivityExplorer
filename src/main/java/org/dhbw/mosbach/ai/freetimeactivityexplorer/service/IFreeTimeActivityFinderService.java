@@ -1,19 +1,31 @@
 package org.dhbw.mosbach.ai.freetimeactivityexplorer.service;
 
-import java.util.Collection;
-
-import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import org.dhbw.mosbach.ai.freetimeactivityexplorer.model.Activity;
+import org.dhbw.mosbach.ai.freetimeactivityexplorer.model.SearchLabel;
 
 
 
-@WebService(name = "freeTimeActivityFinder")
 public interface IFreeTimeActivityFinderService {
 
-	Collection<Activity> findActivity(String village);
+	@GET
+	@Path("/{village}")
+	@Produces("text/json")
+	Activity[] findActivity(@PathParam("village") String village);
 	
-	void addSearchPattern(String searchPattern, double tempMin, double tempMax);
+	@POST
+	@Consumes(MediaType.TEXT_XML)
+	void addSearchPattern(SearchLabel searchLabel);
 	
-	String getAllSearchPatterns();
+	@GET
+	@Path("/allsearchlabels")
+	@Produces("text/json")
+	SearchLabel[] getAllSearchLabels();
 }
