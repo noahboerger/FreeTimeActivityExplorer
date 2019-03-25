@@ -6,7 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.dhbw.mosbach.ai.freetimeactivityexplorer.apis.places.coords.Coordinates;
+import org.dhbw.mosbach.ai.freetimeactivityexplorer.general.Coordinates;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

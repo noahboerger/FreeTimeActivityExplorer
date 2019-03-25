@@ -1,4 +1,4 @@
-package org.dhbw.mosbach.ai.freetimeactivityexplorer.apis.places.coords;
+package org.dhbw.mosbach.ai.freetimeactivityexplorer.general;
 
 public class Coordinates {
 	double latitude;
@@ -8,7 +8,7 @@ public class Coordinates {
 		longitude = 0;
 		latitude = 0;
 	}
-	
+
 	public Coordinates(double latitude, double longitude) {
 		this.latitude = latitude;
 		this.longitude = longitude;
@@ -21,12 +21,17 @@ public class Coordinates {
 	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
-	
+
 	public double getLongitude() {
 		return longitude;
 	}
 
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
+	}
+
+	@Override
+	public String toString() {
+		return "Coordinates[lat=" + latitude + " long=" + longitude + "]";
 	}
 }

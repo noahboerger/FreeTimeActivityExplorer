@@ -1,33 +1,37 @@
 package org.dhbw.mosbach.ai.freetimeactivityexplorer.model;
 
+import org.dhbw.mosbach.ai.freetimeactivityexplorer.general.Coordinates;
+
 public class Activity {
 
-	private double latitude;
-	private double longitude;
+	private Coordinates coordinates;
+	
 	private String activityLabel;
+	private String address;
 
-	public Activity(double latitude, double longitude, String activityLabel) {
-		this.latitude = latitude;
-		this.longitude = longitude;
+	public Activity(Coordinates coordinates, String activityLabel, String address) {
+		this.coordinates = coordinates;
 		this.activityLabel = activityLabel;
+		this.address = address;
 	}
 
-	public double getLatitude() {
-		return latitude;
-	}
-
-	public void setLatitude(double latitude) {
-		this.latitude = latitude;
-	}
-
-	public double getLongitude() {
-		return longitude;
-	}
-
-	public void setLongitude(double longitude) {
-		this.longitude = longitude;
+	public Coordinates getCoordinates() {
+		return coordinates;
 	}
 	
+	public void setCoordinates(Coordinates coordinates) {
+		this.coordinates = coordinates;
+	}
+	
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+
 	public String getActivityLabel() {
 		return activityLabel;
 	}

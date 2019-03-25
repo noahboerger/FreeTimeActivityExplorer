@@ -1,14 +1,18 @@
 package org.dhbw.mosbach.ai.freetimeactivityexplorer.apis.places.search;
 
+import org.dhbw.mosbach.ai.freetimeactivityexplorer.general.Coordinates;
+
 public class Place {
 
 	private String reference;
 	private String name;
-	private String icon;
-	private String formatted_address;
+	private String address;
 	private String formatted_phone_number;
+	
+	private Coordinates coords;
 
 	public Place() {
+		coords = new Coordinates();
 	}
 
 	public String getReference() {
@@ -27,20 +31,12 @@ public class Place {
 		this.name = name;
 	}
 
-	public String getIcon() {
-		return icon;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
-
-	public String getFormatted_address() {
-		return formatted_address;
-	}
-
-	public void setFormatted_address(String formatted_address) {
-		this.formatted_address = formatted_address;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public String getFormatted_phone_number() {
@@ -50,10 +46,14 @@ public class Place {
 	public void setFormatted_phone_number(String formatted_phone_number) {
 		this.formatted_phone_number = formatted_phone_number;
 	}
+	
+	public Coordinates getCoordinates() {
+		return coords;
+	}
 
 	@Override
 	public String toString() {
-		return "Place[reference=" + reference + " name=" + name + " icon=" + icon + " formatted_address="
-				+ formatted_address + " formatted_phone_number=" + formatted_phone_number + "]";
+		return "Place[reference=" + reference + " name=" + name + " location=" + coords + " address="
+				+ address + " formatted_phone_number=" + formatted_phone_number + "]";
 	}
 }
