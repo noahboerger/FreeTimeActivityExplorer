@@ -13,7 +13,7 @@ import org.json.JSONObject;
 public class OpenWeatherMapAPI {
 	private final static String BASE_URL = "http://api.openweathermap.org/data/2.5/weather";
 
-//Alle 20? minuten? 60 pro minute?
+	// 60 Anfragen pro minute
 	private final static String API_KEY = "8a4daa0b5a7a0b116b2ada5245b56d8d";
 
 	public static WeatherData getWeathertoCoords(Coordinates coordinates) {
@@ -57,20 +57,19 @@ public class OpenWeatherMapAPI {
 		JSONObject jsonObj = new JSONObject(jsonResults.toString());
 		JSONObject jsonMain = jsonObj.getJSONObject("main");
 		returnWeatherData.setTemperature(temperatureKelvinToCelsius(jsonMain.getDouble("temp")));
-		
+
 		JSONArray jsonWeather = jsonObj.getJSONArray("weather");
 		JSONObject jsonWeatherObj = jsonWeather.getJSONObject(0);
 		String mainWeatherString = jsonWeatherObj.getString("main").toLowerCase();
-		
-		if(mainWeatherString.contains("rain") || mainWeatherString.contains("snow")) {
+
+		if (mainWeatherString.contains("rain") || mainWeatherString.contains("snow")) {
 			returnWeatherData.setRaining(true);
 		} else {
 			returnWeatherData.setRaining(false);
 		}
-
 		return returnWeatherData;
 	}
-	
+
 	public static double temperatureKelvinToCelsius(double temperatureInKelvin) {
 		return temperatureInKelvin - 273.15;
 	}

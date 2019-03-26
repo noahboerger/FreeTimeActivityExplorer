@@ -1,4 +1,4 @@
-package org.dhbw.mosbach.ai.freetimeactivityexplorer.model;
+package org.dhbw.mosbach.ai.freetimeactivityexplorer.general;
 
 import org.dhbw.mosbach.ai.freetimeactivityexplorer.general.Coordinates;
 

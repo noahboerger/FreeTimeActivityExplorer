@@ -31,7 +31,7 @@ public class MapQuestAPI {
 			sb.append("&outFormat=json");
 			sb.append("&location=");
 			sb.append(village);
-			sb.append("%2C+Germany");
+			sb.append("%2C+Germany"); //Für bessere Ergebnisse: Beschränkung auf Deutschland
 			sb.append("&maxResults=1");
 
 			URL url = new URL(sb.toString());
