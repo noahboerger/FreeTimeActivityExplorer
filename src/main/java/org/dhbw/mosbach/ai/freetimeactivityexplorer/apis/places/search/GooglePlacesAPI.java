@@ -124,6 +124,7 @@ public class GooglePlacesAPI {
                 place.setReference(predsJsonArray.getJSONObject(i).getString("reference"));
                 place.setName(predsJsonArray.getJSONObject(i).getString("name"));
                 place.setAddress(predsJsonArray.getJSONObject(i).getString("vicinity"));
+                place.setRating(predsJsonArray.getJSONObject(i).getDouble("rating"));
                 JSONObject geoJson = predsJsonArray.getJSONObject(i).getJSONObject("geometry");
                 JSONObject locationJson = geoJson.getJSONObject("location");
                 place.getCoordinates().setLatitude(locationJson.getDouble("lat"));

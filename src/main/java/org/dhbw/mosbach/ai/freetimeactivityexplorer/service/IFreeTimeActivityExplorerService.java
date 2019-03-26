@@ -22,10 +22,14 @@ public interface IFreeTimeActivityExplorerService {
 	
 	@POST
 	@Consumes(MediaType.TEXT_XML)
-	void addSearchPattern(SearchLabel searchLabel);
+	void addSearchLabel(SearchLabel searchLabel);
 	
 	@GET
 	@Path("/allsearchlabels")
 	@Produces("text/json")
 	SearchLabel[] getAllSearchLabels();
+	
+	@GET
+	@Path("initializedb")
+	void initializeDataBase();
 }
