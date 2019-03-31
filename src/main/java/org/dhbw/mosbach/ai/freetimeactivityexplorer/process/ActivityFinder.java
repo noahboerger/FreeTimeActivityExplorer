@@ -11,6 +11,7 @@ import org.dhbw.mosbach.ai.freetimeactivityexplorer.apis.places.search.Place;
 import org.dhbw.mosbach.ai.freetimeactivityexplorer.apis.weather.OpenWeatherMapAPI;
 import org.dhbw.mosbach.ai.freetimeactivityexplorer.apis.weather.WeatherData;
 import org.dhbw.mosbach.ai.freetimeactivityexplorer.dao.SearchLabelDao;
+import org.dhbw.mosbach.ai.freetimeactivityexplorer.general.APINoResultException;
 import org.dhbw.mosbach.ai.freetimeactivityexplorer.general.Activity;
 import org.dhbw.mosbach.ai.freetimeactivityexplorer.general.Coordinates;
 import org.dhbw.mosbach.ai.freetimeactivityexplorer.general.ReturnActivityDTO;
@@ -25,18 +26,36 @@ public class ActivityFinder {
 	private final int SEARCH_RADIUS = 10000;
 
 	public ReturnActivityDTO findActivity(String village) {
-		Coordinates coords = MapQuestAPI.getCoordsToVillage(village);
+		
+		String status = "OK";
+		
+		Coordinates coords;
+		try {
+			coords = MapQuestAPI.getCoordsToVillage(village);
+		} catch (APINoResultException e) {
+			return new ReturnActivityDTO("ERROR", village, null, null,null);
+		}
 
-		WeatherData weatherData = OpenWeatherMapAPI.getWeathertoCoords(coords);
-
-		ArrayList<Place> foundPlaces = new ArrayList<Place>();
-
+		WeatherData weatherData;
+		try {
+			weatherData = OpenWeatherMapAPI.getWeathertoCoords(coords);
+		} catch (APINoResultException e) {
+			return new ReturnActivityDTO("ERROR", village, coords, null, null);
+		}
 		List<SearchLabel> allSearchLabelList = searchLabelDao.getAll();
 
+		List<Place> foundPlaces = new ArrayList<Place>();
+		
 		for (SearchLabel searchLabel : allSearchLabelList) {
 			if (searchLabel.isSuitableWeather(weatherData)) {
-				foundPlaces.addAll(GooglePlacesAPI.search(searchLabel.getSearchLabel(), coords.getLatitude(),
-						coords.getLongitude(), SEARCH_RADIUS));
+				try {
+					List<Place> actFoundPlaces = GooglePlacesAPI.search(searchLabel.getSearchLabel(), coords.getLatitude(),
+							coords.getLongitude(), SEARCH_RADIUS);
+					foundPlaces.addAll(actFoundPlaces);
+				} catch (APINoResultException e) {
+					status = "ERROR";
+					continue;
+				}
 			}
 		}
 
@@ -45,10 +64,10 @@ public class ActivityFinder {
 		int i = 0;
 		for (Place foundPlace : foundPlaces) {
 			foundActivity[i] = new Activity(foundPlace.getCoordinates(), foundPlace.getName(), foundPlace.getRating(),
-					foundPlace.getAddress());
+					foundPlace.getAddress(), foundPlace.getActivityType());
 			i++;
 		}
-		ReturnActivityDTO returnActivityDTO = new ReturnActivityDTO(village, coords, weatherData, foundActivity);
+		ReturnActivityDTO returnActivityDTO = new ReturnActivityDTO(status, village, coords, weatherData, foundActivity);
 		return returnActivityDTO;
 	}
 }

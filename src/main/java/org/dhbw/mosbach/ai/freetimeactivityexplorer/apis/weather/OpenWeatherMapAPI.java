@@ -6,8 +6,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.dhbw.mosbach.ai.freetimeactivityexplorer.general.APINoResultException;
 import org.dhbw.mosbach.ai.freetimeactivityexplorer.general.Coordinates;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class OpenWeatherMapAPI {
@@ -16,7 +18,7 @@ public class OpenWeatherMapAPI {
 	// 60 Anfragen pro minute
 	private final static String API_KEY = "8a4daa0b5a7a0b116b2ada5245b56d8d";
 
-	public static WeatherData getWeathertoCoords(Coordinates coordinates) {
+	public static WeatherData getWeathertoCoords(Coordinates coordinates) throws APINoResultException {
 		WeatherData returnWeatherData = new WeatherData();
 
 		HttpURLConnection conn = null;
@@ -44,16 +46,17 @@ public class OpenWeatherMapAPI {
 
 		} catch (MalformedURLException e) {
 			System.err.println("Error processing OpenWeatherMap API URL" + e);
-			return null;
+			throw new APINoResultException();
 		} catch (IOException e) {
 			System.err.println("Error connecting to OpenWeatherMap API" + e);
-			return null;
+			throw new APINoResultException();
 		} finally {
 			if (conn != null) {
 				conn.disconnect();
 			}
 		}
 
+		try {
 		JSONObject jsonObj = new JSONObject(jsonResults.toString());
 		JSONObject jsonMain = jsonObj.getJSONObject("main");
 		returnWeatherData.setTemperature(temperatureKelvinToCelsius(jsonMain.getDouble("temp")));
@@ -66,6 +69,10 @@ public class OpenWeatherMapAPI {
 			returnWeatherData.setRaining(true);
 		} else {
 			returnWeatherData.setRaining(false);
+		}
+		}catch(JSONException e) {
+			System.err.println("Unable to Parse Json to WeatherData");
+			throw new APINoResultException();
 		}
 		return returnWeatherData;
 	}

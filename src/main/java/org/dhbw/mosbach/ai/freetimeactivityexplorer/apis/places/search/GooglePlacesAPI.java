@@ -1,5 +1,6 @@
 package org.dhbw.mosbach.ai.freetimeactivityexplorer.apis.places.search;
 
+import org.dhbw.mosbach.ai.freetimeactivityexplorer.general.APINoResultException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,8 +22,8 @@ public class GooglePlacesAPI {
     private static final String API_KEY = "AIzaSyA0eRPuS8wbevlN8bGeGZSZYAeRiZdVeE0";
     private static final String API_KEY_BOERGER = "AIzaSyBS4pL3epWzHIg_K4v1sNGL0HYajVnNMcc";
 
-    public static ArrayList<Place> search(String keyword, double latitude, double longitude, int radius) {
-        ArrayList<Place> resultList = null;
+    public static ArrayList<Place> search(String keyword, double latitude, double longitude, int radius) throws APINoResultException {
+        ArrayList<Place> resultList = new ArrayList<Place>();;
 
         HttpURLConnection conn = null;
         StringBuilder jsonResults = new StringBuilder();
@@ -47,10 +48,10 @@ public class GooglePlacesAPI {
             }
         } catch (MalformedURLException e) {
             System.err.println("Error processing Places API URL" + e);
-            return resultList;
+            throw new APINoResultException();
         } catch (IOException e) {
             System.err.println("Error connecting to Places API" + e);
-            return resultList;
+            throw new APINoResultException();
         } finally {
             if (conn != null) {
                 conn.disconnect();
@@ -65,6 +66,7 @@ public class GooglePlacesAPI {
             resultList = new ArrayList<Place>(predsJsonArray.length());
             for (int i = 0; i < predsJsonArray.length(); i++) {
                 Place place = new Place();
+                place.setActivityType(keyword);
                 place.setReference(predsJsonArray.getJSONObject(i).getString("reference"));
                 place.setName(predsJsonArray.getJSONObject(i).getString("name"));
                 place.setAddress(predsJsonArray.getJSONObject(i).getString("vicinity"));
@@ -77,6 +79,7 @@ public class GooglePlacesAPI {
             }
         } catch (JSONException e) {
             System.err.println( "Error processing JSON results"+ e);
+            throw new APINoResultException();
         }
 
         return resultList;

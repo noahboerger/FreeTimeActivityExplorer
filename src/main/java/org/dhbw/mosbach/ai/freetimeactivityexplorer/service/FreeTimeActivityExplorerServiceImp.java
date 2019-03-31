@@ -28,34 +28,40 @@ public class FreeTimeActivityExplorerServiceImp implements IFreeTimeActivityExpl
 	@Override
 	public ReturnActivityDTO findActivity(String village) {
 		logger.log(Level.INFO, "Calling to findActivity in " + village);
-		
+
 		return activityFinder.findActivity(village);
 	}
 
 	@Override
 	public void addSearchLabel(SearchLabel searchLabel) {
 		logger.log(Level.INFO, "Calling to addSearchLabel: " + searchLabel);
-		
+
 		searchLabelDao.add(searchLabel);
 	}
 
 	@Override
 	public SearchLabel[] getAllSearchLabels() {
 		logger.log(Level.INFO, "Calling to getAllSearchLabels");
-		
+
 		final Collection<SearchLabel> allSearchLables = searchLabelDao.getAll();
 		return allSearchLables.toArray(new SearchLabel[allSearchLables.size()]);
 	}
 
 	@Override
-	public void initializeDataBase() {
+	public String initializeDataBase() {
 		logger.log(Level.INFO, "Calling to initialzeDataBase");
-		
-		SearchLabel searchLabelFitnessstudio = new SearchLabel("Fitnessstuido", Float.MIN_VALUE, Float.MAX_VALUE, true);
+
+		SearchLabel searchLabelFitnessstudio = new SearchLabel("Fitnessstudio", Float.MIN_VALUE, Float.MAX_VALUE, true);
 		SearchLabel searchLabelFreibad = new SearchLabel("Freibad", 18.0, Float.MAX_VALUE, false);
 		SearchLabel searchLabelHallenbad = new SearchLabel("Hallenbad", Float.MIN_VALUE, Float.MAX_VALUE, true);
 		SearchLabel searchLabelTennis = new SearchLabel("Tennis", 14.0, 35.0, false);
-		SearchLabel searchLabelFussballPlatz = new SearchLabel("FussballPlatz", 12.0, 35.0, false);
+		SearchLabel searchLabelFussball = new SearchLabel("Fussball", 12.0, 35.0, false);
+		SearchLabel searchLabelKegeln = new SearchLabel("Kegeln", Float.MIN_VALUE, Float.MAX_VALUE, true);
+		SearchLabel searchLabelBowling = new SearchLabel("Bowling", Float.MIN_VALUE, Float.MAX_VALUE, true);
+		SearchLabel searchLabelBibliothek = new SearchLabel("Bibliothek", Float.MIN_VALUE, Float.MAX_VALUE, true);
+		SearchLabel searchLabelKlettern = new SearchLabel("Klettern", 12.0, 30.0, false);
+		SearchLabel searchLabelSkatePark = new SearchLabel("Skatepark", 10.0, 30.0, false);
+		SearchLabel searchLabelGolf = new SearchLabel("Golf", 10.0, 35.0, false);
 
 		List<SearchLabel> searchLabelList = searchLabelDao.getAll();
 
@@ -71,8 +77,38 @@ public class FreeTimeActivityExplorerServiceImp implements IFreeTimeActivityExpl
 		if (!searchLabelList.contains(searchLabelTennis)) {
 			searchLabelDao.add(searchLabelTennis);
 		}
-		if(!searchLabelList.contains(searchLabelFussballPlatz)) {
-			searchLabelDao.add(searchLabelFussballPlatz);
+		if (!searchLabelList.contains(searchLabelFussball)) {
+			searchLabelDao.add(searchLabelFussball);
 		}
+		if (!searchLabelList.contains(searchLabelKegeln)) {
+			searchLabelDao.add(searchLabelKegeln);
+		}
+		if (!searchLabelList.contains(searchLabelBowling)) {
+			searchLabelDao.add(searchLabelBowling);
+		}
+		if (!searchLabelList.contains(searchLabelBibliothek)) {
+			searchLabelDao.add(searchLabelBibliothek);
+		}
+		if (!searchLabelList.contains(searchLabelKlettern)) {
+			searchLabelDao.add(searchLabelKlettern);
+		}
+		if (!searchLabelList.contains(searchLabelSkatePark)) {
+			searchLabelDao.add(searchLabelSkatePark);
+		}
+		if(!searchLabelList.contains(searchLabelGolf)) {
+			searchLabelDao.add(searchLabelGolf);
+		}
+		return "Initialized DataBase with some Standard activities - you can add some more!";
+	}
+
+	@Override
+	public String deleteSearchLabel(String name) {
+		for (SearchLabel searchlabel : searchLabelDao.getAll()) {
+			if (searchlabel.getSearchLabel().equalsIgnoreCase(name)) {
+				searchLabelDao.delete(searchlabel);
+				return "Deleted";
+			}
+		}
+		return "Nothing found to delete";
 	}
 }

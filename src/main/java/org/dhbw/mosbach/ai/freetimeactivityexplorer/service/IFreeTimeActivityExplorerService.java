@@ -8,29 +8,32 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.dhbw.mosbach.ai.freetimeactivityexplorer.general.Activity;
 import org.dhbw.mosbach.ai.freetimeactivityexplorer.general.ReturnActivityDTO;
 import org.dhbw.mosbach.ai.freetimeactivityexplorer.model.SearchLabel;
-
-
 
 public interface IFreeTimeActivityExplorerService {
 
 	@GET
 	@Path("/findactivity/{village}")
-	@Produces("text/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	ReturnActivityDTO findActivity(@PathParam("village") String village);
-	
+
 	@POST
 	@Consumes(MediaType.TEXT_XML)
 	void addSearchLabel(SearchLabel searchLabel);
-	
+
 	@GET
 	@Path("/allsearchlabels")
-	@Produces("text/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	SearchLabel[] getAllSearchLabels();
-	
+
 	@GET
-	@Path("initializedb")
-	void initializeDataBase();
+	@Path("/initializedb")
+	@Produces(MediaType.TEXT_HTML)
+	String initializeDataBase();
+
+	@GET
+	@Path("/deletesearchlabel/{name}")
+	@Produces(MediaType.TEXT_HTML)
+	String deleteSearchLabel(@PathParam("name") String name);
 }

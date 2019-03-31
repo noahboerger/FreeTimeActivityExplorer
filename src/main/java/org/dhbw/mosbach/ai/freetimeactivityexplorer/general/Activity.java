@@ -9,12 +9,23 @@ public class Activity {
 	private String activityLabel;
 	private double rating;
 	private String address;
+	
+	private String activityType;
 
-	public Activity(Coordinates coordinates, String activityLabel, double rating, String address) {
+	public Activity(Coordinates coordinates, String activityLabel, double rating, String address, String activityTye) {
 		this.coordinates = coordinates;
 		this.activityLabel = activityLabel;
 		this.rating = rating;
 		this.address = address;
+		this.activityType = activityTye;
+	}
+
+	public String getActivityType() {
+		return activityType;
+	}
+
+	public void setActivityType(String activityType) {
+		this.activityType = activityType;
 	}
 
 	public Coordinates getCoordinates() {

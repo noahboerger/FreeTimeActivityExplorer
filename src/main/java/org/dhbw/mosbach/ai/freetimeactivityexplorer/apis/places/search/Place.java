@@ -10,6 +10,15 @@ public class Place {
 	private String formatted_phone_number;
 
 	private double rating;
+	private String activityType;
+
+	public String getActivityType() {
+		return activityType;
+	}
+
+	public void setActivityType(String activityType) {
+		this.activityType = activityType;
+	}
 
 	private Coordinates coords;
 
@@ -64,6 +73,6 @@ public class Place {
 	@Override
 	public String toString() {
 		return "Place[reference=" + reference + " name=" + name + " location=" + coords + " address=" + address
-				+ " formatted_phone_number=" + formatted_phone_number + "]";
+				+ " formatted_phone_number=" + formatted_phone_number + "activityType=" + activityType + "]";
 	}
 }
