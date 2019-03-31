@@ -32,7 +32,7 @@ public class GooglePlacesAPI {
             sb.append(TYPE_SEARCH);
             sb.append(OUT_JSON);
             sb.append("?sensor=false");
-            sb.append("&key=" + API_KEY);
+            sb.append("&key=" + API_KEY_BOERGER);
             sb.append("&keyword=" + URLEncoder.encode(keyword, "utf8"));
             sb.append("&location=" + String.valueOf(latitude) + "," + String.valueOf(longitude));
             sb.append("&radius=" + String.valueOf(radius));
