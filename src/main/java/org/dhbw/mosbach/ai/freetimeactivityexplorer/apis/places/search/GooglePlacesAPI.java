@@ -1,6 +1,7 @@
 package org.dhbw.mosbach.ai.freetimeactivityexplorer.apis.places.search;
 
 import org.dhbw.mosbach.ai.freetimeactivityexplorer.general.APINoResultException;
+import org.dhbw.mosbach.ai.freetimeactivityexplorer.general.Coordinates;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,6 +13,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class GooglePlacesAPI {
@@ -22,8 +24,21 @@ public class GooglePlacesAPI {
     private static final String API_KEY = "AIzaSyA0eRPuS8wbevlN8bGeGZSZYAeRiZdVeE0";
     private static final String API_KEY_BOERGER = "AIzaSyBS4pL3epWzHIg_K4v1sNGL0HYajVnNMcc";
 
-    public static ArrayList<Place> search(String keyword, double latitude, double longitude, int radius) throws APINoResultException {
-        ArrayList<Place> resultList = new ArrayList<Place>();;
+    private static HashMap<Coordinates, HashMap<String, Long>> lastUpdated = new HashMap<>();
+    private static HashMap<Coordinates, HashMap<String, ArrayList<Place>>> puffer = new HashMap<>();
+    
+    public static ArrayList<Place> search(String keyword, Coordinates coordinates, int radius) throws APINoResultException {
+        
+    	if(puffer.containsKey(coordinates)) {
+    		if(puffer.get(coordinates).containsKey(keyword)) {
+    			//update every 60 s
+    			if(System.currentTimeMillis() - lastUpdated.get(coordinates).get(keyword) < 60000) {
+    				return puffer.get(coordinates).get(keyword);
+    			}
+    		}
+    	}
+    	
+    	ArrayList<Place> resultList = new ArrayList<Place>();
 
         HttpURLConnection conn = null;
         StringBuilder jsonResults = new StringBuilder();
@@ -34,7 +49,7 @@ public class GooglePlacesAPI {
             sb.append("?sensor=false");
             sb.append("&key=" + API_KEY_BOERGER);
             sb.append("&keyword=" + URLEncoder.encode(keyword, "utf8"));
-            sb.append("&location=" + String.valueOf(latitude) + "," + String.valueOf(longitude));
+            sb.append("&location=" + String.valueOf(coordinates.getLatitude()) + "," + String.valueOf(coordinates.getLongitude()));
             sb.append("&radius=" + String.valueOf(radius));
 
             URL url = new URL(sb.toString());
@@ -82,6 +97,18 @@ public class GooglePlacesAPI {
             throw new APINoResultException();
         }
 
+        if(!lastUpdated.containsKey(coordinates)) {
+        	HashMap<String, Long> updated = new HashMap<>();
+        	updated.put(keyword, System.currentTimeMillis());
+        	lastUpdated.put(coordinates, updated);
+        	
+        	HashMap<String, ArrayList<Place>> puffered = new HashMap<>();
+        	puffered.put(keyword, resultList);
+        	puffer.put(coordinates, puffered);
+        } else {
+        	lastUpdated.get(coordinates).put(keyword, System.currentTimeMillis());
+        	puffer.get(coordinates).put(keyword, resultList);
+        }
         return resultList;
     }
 }

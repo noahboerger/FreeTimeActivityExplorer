@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 
 import org.dhbw.mosbach.ai.freetimeactivityexplorer.general.APINoResultException;
 import org.dhbw.mosbach.ai.freetimeactivityexplorer.general.Coordinates;
@@ -17,8 +18,19 @@ public class OpenWeatherMapAPI {
 
 	// 60 Anfragen pro minute
 	private final static String API_KEY = "8a4daa0b5a7a0b116b2ada5245b56d8d";
+	
+	private static HashMap<Coordinates, Long> lastUpdated = new HashMap<>();
+	private static HashMap<Coordinates, WeatherData> puffer = new HashMap<>();
 
 	public static WeatherData getWeathertoCoords(Coordinates coordinates) throws APINoResultException {
+		
+		if(lastUpdated.containsKey(puffer)) {
+			//update jede minute
+			if(System.currentTimeMillis() - lastUpdated.get(puffer) < 60000) {
+				return puffer.get(coordinates);
+			}
+		}
+		
 		WeatherData returnWeatherData = new WeatherData();
 
 		HttpURLConnection conn = null;
@@ -74,6 +86,8 @@ public class OpenWeatherMapAPI {
 			System.err.println("Unable to Parse Json to WeatherData");
 			throw new APINoResultException();
 		}
+		lastUpdated.put(coordinates, System.currentTimeMillis());
+		puffer.put(coordinates, returnWeatherData);
 		return returnWeatherData;
 	}
 

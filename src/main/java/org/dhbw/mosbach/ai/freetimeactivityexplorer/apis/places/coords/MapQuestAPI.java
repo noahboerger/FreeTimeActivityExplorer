@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 
 import org.dhbw.mosbach.ai.freetimeactivityexplorer.general.APINoResultException;
 import org.dhbw.mosbach.ai.freetimeactivityexplorer.general.Coordinates;
@@ -19,7 +20,15 @@ public class MapQuestAPI {
 	// 15 000 Anfragen frei
 	private final static String API_KEY = "F5JOdf5ICpDl13pWwomhONGeJJdfHRtZ";
 
+	
+	private static HashMap<String, Coordinates> puffer = new HashMap<>();
+	
 	public static Coordinates getCoordsToVillage(String village) throws APINoResultException {
+		
+		if(puffer.containsKey(village)) {
+			return puffer.get(village);
+		}
+		
 		Coordinates returnCoords = new Coordinates();
 
 		HttpURLConnection conn = null;
@@ -69,6 +78,7 @@ public class MapQuestAPI {
 			System.err.println("Unable to Parse JSON to Coords");
 			throw new APINoResultException();
 		}
+		puffer.put(village, returnCoords);
 		return returnCoords;
 	}
 }

@@ -49,8 +49,7 @@ public class ActivityFinder {
 		for (SearchLabel searchLabel : allSearchLabelList) {
 			if (searchLabel.isSuitableWeather(weatherData)) {
 				try {
-					List<Place> actFoundPlaces = GooglePlacesAPI.search(searchLabel.getSearchLabel(), coords.getLatitude(),
-							coords.getLongitude(), SEARCH_RADIUS);
+					List<Place> actFoundPlaces = GooglePlacesAPI.search(searchLabel.getSearchLabel(), coords, SEARCH_RADIUS);
 					foundPlaces.addAll(actFoundPlaces);
 				} catch (APINoResultException e) {
 					status = "ERROR";
