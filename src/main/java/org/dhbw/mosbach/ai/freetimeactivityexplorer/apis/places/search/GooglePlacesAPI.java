@@ -20,6 +20,8 @@ public class GooglePlacesAPI {
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
     private static final String TYPE_SEARCH = "/search";
     private static final String OUT_JSON = "/json";
+    
+    private static final int SEARCH_RADIUS = 10000;
 
     private static final String API_KEY = "AIzaSyA0eRPuS8wbevlN8bGeGZSZYAeRiZdVeE0";
     private static final String API_KEY_BOERGER = "AIzaSyBS4pL3epWzHIg_K4v1sNGL0HYajVnNMcc";
@@ -27,7 +29,7 @@ public class GooglePlacesAPI {
     private static HashMap<Coordinates, HashMap<String, Long>> lastUpdated = new HashMap<>();
     private static HashMap<Coordinates, HashMap<String, ArrayList<Place>>> puffer = new HashMap<>();
     
-    public static ArrayList<Place> search(String keyword, Coordinates coordinates, int radius) throws APINoResultException {
+    public static ArrayList<Place> search(String keyword, Coordinates coordinates) throws APINoResultException {
         
     	if(puffer.containsKey(coordinates)) {
     		if(puffer.get(coordinates).containsKey(keyword)) {
@@ -50,7 +52,7 @@ public class GooglePlacesAPI {
             sb.append("&key=" + API_KEY_BOERGER);
             sb.append("&keyword=" + URLEncoder.encode(keyword, "utf8"));
             sb.append("&location=" + String.valueOf(coordinates.getLatitude()) + "," + String.valueOf(coordinates.getLongitude()));
-            sb.append("&radius=" + String.valueOf(radius));
+            sb.append("&radius=" + String.valueOf(SEARCH_RADIUS));
 
             URL url = new URL(sb.toString());
             conn = (HttpURLConnection) url.openConnection();

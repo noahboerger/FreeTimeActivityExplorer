@@ -23,8 +23,6 @@ public class ActivityFinder {
 	@Inject
 	private SearchLabelDao searchLabelDao;
 
-	private final int SEARCH_RADIUS = 10000;
-
 	public ReturnActivityDTO findActivity(String village) {
 		
 		String status = "OK";
@@ -49,7 +47,7 @@ public class ActivityFinder {
 		for (SearchLabel searchLabel : allSearchLabelList) {
 			if (searchLabel.isSuitableWeather(weatherData)) {
 				try {
-					List<Place> actFoundPlaces = GooglePlacesAPI.search(searchLabel.getSearchLabel(), coords, SEARCH_RADIUS);
+					List<Place> actFoundPlaces = GooglePlacesAPI.search(searchLabel.getSearchLabel(), coords);
 					foundPlaces.addAll(actFoundPlaces);
 				} catch (APINoResultException e) {
 					status = "ERROR";
