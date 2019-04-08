@@ -18,19 +18,19 @@ public class OpenWeatherMapAPI {
 
 	// 60 Anfragen pro minute
 	private final static String API_KEY = "8a4daa0b5a7a0b116b2ada5245b56d8d";
-	
+
 	private static HashMap<Coordinates, Long> lastUpdated = new HashMap<>();
 	private static HashMap<Coordinates, WeatherData> puffer = new HashMap<>();
 
 	public static WeatherData getWeathertoCoords(Coordinates coordinates) throws APINoResultException {
-		
-		if(lastUpdated.containsKey(puffer)) {
-			//update jede minute
-			if(System.currentTimeMillis() - lastUpdated.get(puffer) < 60000) {
+
+		if (lastUpdated.containsKey(coordinates)) {
+			// update every 60 s
+			if (System.currentTimeMillis() - lastUpdated.get(coordinates) < 60000) {
 				return puffer.get(coordinates);
 			}
 		}
-		
+
 		WeatherData returnWeatherData = new WeatherData();
 
 		HttpURLConnection conn = null;
@@ -69,20 +69,20 @@ public class OpenWeatherMapAPI {
 		}
 
 		try {
-		JSONObject jsonObj = new JSONObject(jsonResults.toString());
-		JSONObject jsonMain = jsonObj.getJSONObject("main");
-		returnWeatherData.setTemperature(temperatureKelvinToCelsius(jsonMain.getDouble("temp")));
+			JSONObject jsonObj = new JSONObject(jsonResults.toString());
+			JSONObject jsonMain = jsonObj.getJSONObject("main");
+			returnWeatherData.setTemperature(temperatureKelvinToCelsius(jsonMain.getDouble("temp")));
 
-		JSONArray jsonWeather = jsonObj.getJSONArray("weather");
-		JSONObject jsonWeatherObj = jsonWeather.getJSONObject(0);
-		String mainWeatherString = jsonWeatherObj.getString("main").toLowerCase();
+			JSONArray jsonWeather = jsonObj.getJSONArray("weather");
+			JSONObject jsonWeatherObj = jsonWeather.getJSONObject(0);
+			String mainWeatherString = jsonWeatherObj.getString("main").toLowerCase();
 
-		if (mainWeatherString.contains("rain") || mainWeatherString.contains("snow")) {
-			returnWeatherData.setRaining(true);
-		} else {
-			returnWeatherData.setRaining(false);
-		}
-		}catch(JSONException e) {
+			if (mainWeatherString.contains("rain") || mainWeatherString.contains("snow")) {
+				returnWeatherData.setRaining(true);
+			} else {
+				returnWeatherData.setRaining(false);
+			}
+		} catch (JSONException e) {
 			System.err.println("Unable to Parse Json to WeatherData");
 			throw new APINoResultException();
 		}

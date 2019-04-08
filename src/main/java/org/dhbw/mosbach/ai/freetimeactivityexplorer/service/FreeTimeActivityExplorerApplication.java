@@ -5,5 +5,4 @@ import javax.ws.rs.core.Application;
 
 @ApplicationPath(value = "")
 public class FreeTimeActivityExplorerApplication extends Application {
-
 }

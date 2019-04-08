@@ -24,14 +24,14 @@ public class ActivityFinder {
 	private SearchLabelDao searchLabelDao;
 
 	public ReturnActivityDTO findActivity(String village) {
-		
+
 		String status = "OK";
-		
+
 		Coordinates coords;
 		try {
 			coords = MapQuestAPI.getCoordsToVillage(village);
 		} catch (APINoResultException e) {
-			return new ReturnActivityDTO("ERROR", village, null, null,null);
+			return new ReturnActivityDTO("ERROR", village, null, null, null);
 		}
 
 		WeatherData weatherData;
@@ -40,10 +40,11 @@ public class ActivityFinder {
 		} catch (APINoResultException e) {
 			return new ReturnActivityDTO("ERROR", village, coords, null, null);
 		}
+
 		List<SearchLabel> allSearchLabelList = searchLabelDao.getAll();
 
 		List<Place> foundPlaces = new ArrayList<Place>();
-		
+
 		for (SearchLabel searchLabel : allSearchLabelList) {
 			if (searchLabel.isSuitableWeather(weatherData)) {
 				try {
@@ -64,7 +65,8 @@ public class ActivityFinder {
 					foundPlace.getAddress(), foundPlace.getActivityType());
 			i++;
 		}
-		ReturnActivityDTO returnActivityDTO = new ReturnActivityDTO(status, village, coords, weatherData, foundActivity);
+		ReturnActivityDTO returnActivityDTO = new ReturnActivityDTO(status, village, coords, weatherData,
+				foundActivity);
 		return returnActivityDTO;
 	}
 }

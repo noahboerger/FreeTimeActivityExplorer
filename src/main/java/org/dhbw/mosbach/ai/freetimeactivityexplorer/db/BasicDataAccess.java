@@ -5,13 +5,10 @@ import java.util.Collection;
 /**
  * Basic DAO interface
  *
- * @param <E>
- *          entity class
- * @param <K>
- *          business key
+ * @param <E> entity class
+ * @param <K> business key
  */
-public interface BasicDataAccess<E, K>
-{
+public interface BasicDataAccess<E, K> {
 	E get(K key);
 
 	Collection<E> getAll();

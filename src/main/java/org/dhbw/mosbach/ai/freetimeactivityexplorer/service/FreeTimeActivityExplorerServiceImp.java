@@ -9,7 +9,6 @@ import javax.inject.Inject;
 import javax.ws.rs.Path;
 
 import org.dhbw.mosbach.ai.freetimeactivityexplorer.dao.SearchLabelDao;
-import org.dhbw.mosbach.ai.freetimeactivityexplorer.general.Activity;
 import org.dhbw.mosbach.ai.freetimeactivityexplorer.general.ReturnActivityDTO;
 import org.dhbw.mosbach.ai.freetimeactivityexplorer.model.SearchLabel;
 import org.dhbw.mosbach.ai.freetimeactivityexplorer.process.ActivityFinder;
@@ -95,7 +94,7 @@ public class FreeTimeActivityExplorerServiceImp implements IFreeTimeActivityExpl
 		if (!searchLabelList.contains(searchLabelSkatePark)) {
 			searchLabelDao.add(searchLabelSkatePark);
 		}
-		if(!searchLabelList.contains(searchLabelGolf)) {
+		if (!searchLabelList.contains(searchLabelGolf)) {
 			searchLabelDao.add(searchLabelGolf);
 		}
 		return "Initialized DataBase with some Standard activities - you can add some more!";
@@ -106,9 +105,9 @@ public class FreeTimeActivityExplorerServiceImp implements IFreeTimeActivityExpl
 		for (SearchLabel searchlabel : searchLabelDao.getAll()) {
 			if (searchlabel.getSearchLabel().equalsIgnoreCase(name)) {
 				searchLabelDao.delete(searchlabel);
-				return "Deleted";
+				return "Deleted Searchlabel " + name;
 			}
 		}
-		return "Nothing found to delete";
+		return "No Searchlabel found to delete";
 	}
 }

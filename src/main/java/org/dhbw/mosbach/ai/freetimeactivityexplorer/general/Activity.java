@@ -9,7 +9,7 @@ public class Activity {
 	private String activityLabel;
 	private double rating;
 	private String address;
-	
+
 	private String activityType;
 
 	public Activity(Coordinates coordinates, String activityLabel, double rating, String address, String activityTye) {

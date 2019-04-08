@@ -39,6 +39,34 @@ public class SearchLabel {
 		this.rainAllowed = rainAllowed;
 	}
 
+	public boolean isSuitableWeather(WeatherData weather) {
+		if (weather.getTemperature() > temperatureMin && weather.getTemperature() < temperatueMax) {
+			if (weather.isRaining()) {
+				return rainAllowed;
+			} else {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public String toString() {
+		return "SearchLabel[id=" + id + " searchLabel=" + searchLabel + " tempMin=" + temperatureMin + " tempMax="
+				+ temperatueMax + "rainAllowed=" + rainAllowed + "]";
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof SearchLabel) {
+			SearchLabel compareSearchLabel = (SearchLabel) obj;
+			if (searchLabel.equals(compareSearchLabel.searchLabel)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public String getSearchLabel() {
 		return searchLabel;
 	}
@@ -69,33 +97,5 @@ public class SearchLabel {
 
 	public void setRainAllowed(boolean rainAllowed) {
 		this.rainAllowed = rainAllowed;
-	}
-	
-	public boolean isSuitableWeather(WeatherData weather) {
-		if(weather.getTemperature() > temperatureMin && weather.getTemperature() < temperatueMax) {
-			if(weather.isRaining()) {
-				return rainAllowed;
-			}else {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public String toString() {
-		return "SearchLabel[id=" + id + " searchLabel=" + searchLabel + " tempMin=" + temperatureMin + " tempMax="
-				+ temperatueMax + "rainAllowed=" + rainAllowed + "]";
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof SearchLabel) {
-			SearchLabel compareSearchLabel = (SearchLabel) obj;
-			if (searchLabel.equals(compareSearchLabel.searchLabel)) {
-				return true;
-			}
-		}
-		return false;
 	}
 }

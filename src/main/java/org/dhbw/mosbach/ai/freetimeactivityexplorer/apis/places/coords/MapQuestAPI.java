@@ -20,15 +20,14 @@ public class MapQuestAPI {
 	// 15 000 Anfragen frei
 	private final static String API_KEY = "F5JOdf5ICpDl13pWwomhONGeJJdfHRtZ";
 
-	
 	private static HashMap<String, Coordinates> puffer = new HashMap<>();
-	
+
 	public static Coordinates getCoordsToVillage(String village) throws APINoResultException {
-		
-		if(puffer.containsKey(village)) {
+
+		if (puffer.containsKey(village)) {
 			return puffer.get(village);
 		}
-		
+
 		Coordinates returnCoords = new Coordinates();
 
 		HttpURLConnection conn = null;

@@ -24,39 +24,31 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Sets;
 
 @Dependent
-public final class Tools
-{
+public final class Tools {
 	private static final Logger logger = LoggerFactory.getLogger(Tools.class);
 
 	@PersistenceContext
 	private EntityManager entityManager;
 
 	private static final LoadingCache<Class<?>, Method> idGetters = CacheBuilder.newBuilder().maximumSize(20)
-			.build(new CacheLoader<Class<?>, Method>()
-			{
+			.build(new CacheLoader<Class<?>, Method>() {
 				@Override
-				public Method load(Class<?> key) throws Exception
-				{
+				public Method load(Class<?> key) throws Exception {
 					return getEntityKeyGetterByReflection(key);
 				}
 			});
 
 	@SuppressWarnings("unchecked")
-	public static <I> I getEntityKey(Object entity)
-	{
-		if (entity == null)
-		{
+	public static <I> I getEntityKey(Object entity) {
+		if (entity == null) {
 			return null;
 		}
 
 		final Method idGetterMethod = getEntityKeyGetter(entity.getClass());
 
-		try
-		{
+		try {
 			return (idGetterMethod != null) ? (I) idGetterMethod.invoke(entity) : null;
-		}
-		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException exception)
-		{
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) {
 			throw new IllegalArgumentException("Could not invoke id getter", exception);
 		}
 	}
@@ -65,37 +57,28 @@ public final class Tools
 	 * Returns the getter method for the given entity's primary key by using
 	 * reflection.
 	 *
-	 * @param entityClass
-	 *          entity class
+	 * @param entityClass entity class
 	 * @return getter method or null if none found
 	 */
-	private static Method getEntityKeyGetterByReflection(Class<?> entityClass)
-	{
-		for (final Method method : entityClass.getMethods())
-		{
-			if (method.isAnnotationPresent(Id.class))
-			{
+	private static Method getEntityKeyGetterByReflection(Class<?> entityClass) {
+		for (final Method method : entityClass.getMethods()) {
+			if (method.isAnnotationPresent(Id.class)) {
 				return method;
 			}
 		}
 
 		// Or search for field
-		for(final Field field : getAllFields(entityClass))
-		{
-			if (field.isAnnotationPresent(Id.class))
-			{
+		for (final Field field : getAllFields(entityClass)) {
+			if (field.isAnnotationPresent(Id.class)) {
 				final String fieldName = field.getName();
 				final String getterMethodName = String.format("get%c%s",
 						Character.valueOf(Character.toUpperCase(fieldName.charAt(0))), fieldName.substring(1));
 
-				try
-				{
+				try {
 					return entityClass.getMethod(getterMethodName);
-				}
-				catch (NoSuchMethodException | SecurityException e)
-				{
-					throw new IllegalArgumentException(
-							String.format("Entity class %s does not have getter %s", entityClass.getName(), getterMethodName));
+				} catch (NoSuchMethodException | SecurityException e) {
+					throw new IllegalArgumentException(String.format("Entity class %s does not have getter %s",
+							entityClass.getName(), getterMethodName));
 				}
 			}
 		}
@@ -107,16 +90,13 @@ public final class Tools
 	 * Recursively traverses all super classes to derive a list of all fields,
 	 * including private ones.
 	 *
-	 * @param clazz
-	 *          Class
+	 * @param clazz Class
 	 * @return list of fields
 	 */
-	private static Collection<Field> getAllFields(Class<?> clazz)
-	{
+	private static Collection<Field> getAllFields(Class<?> clazz) {
 		final Set<Field> fields = Sets.newHashSet();
 
-		for(Class<?> cls = clazz; cls != null; cls = cls.getSuperclass())
-		{
+		for (Class<?> cls = clazz; cls != null; cls = cls.getSuperclass()) {
 			fields.addAll(Arrays.asList(cls.getDeclaredFields()));
 		}
 
@@ -127,20 +107,17 @@ public final class Tools
 	 * Returns the getter method for the given entity's primary key by using a cache
 	 * lookup. If no entry exists in the cache, it is searched by reflection.
 	 *
-	 * @param entityClass
-	 *          entity class
+	 * @param entityClass entity class
 	 * @return getter method or null if none found
 	 */
-	public static Method getEntityKeyGetter(Class<?> entityClass)
-	{
+	public static Method getEntityKeyGetter(Class<?> entityClass) {
 		return idGetters.getUnchecked(entityClass);
 	}
 
 	/**
 	 * @return an entity manager with dependent scope
 	 */
-	public static EntityManager getEntityManager()
-	{
+	public static EntityManager getEntityManager() {
 		return getInstance().entityManager;
 	}
 
@@ -149,23 +126,18 @@ public final class Tools
 	 *
 	 * @return {@link Tools} singleton
 	 */
-	private static Tools getInstance()
-	{
+	private static Tools getInstance() {
 		return CDI.current().select(Tools.class).get();
 	}
-
 
 	/**
 	 * Tries to invoke {@link #loadFully(Object)} for each object in the list.
 	 *
-	 * @param list
-	 *          list
+	 * @param list list
 	 */
-	public static void loadFully(List<?> list)
-	{
+	public static void loadFully(List<?> list) {
 		list.stream().forEach(Tools::loadFully);
 	}
-
 
 	/**
 	 * Tries to load lazy values of the given object by invoking all of its getter
@@ -173,33 +145,27 @@ public final class Tools
 	 * objects will be called. This method must be called within an active
 	 * transaction!
 	 *
-	 * @param obj
-	 *          object to be loaded fully
+	 * @param obj object to be loaded fully
 	 */
-	public static void loadFully(Object obj)
-	{
+	public static void loadFully(Object obj) {
 		Preconditions.checkNotNull(obj);
 
-		for (final Method method : obj.getClass().getMethods())
-		{
+		for (final Method method : obj.getClass().getMethods()) {
 			// check whether method starts with get and has no parameters
-			if (method.getName().startsWith("get") && (method.getParameterTypes().length == 0))
-			{
-				try
-				{
+			if (method.getName().startsWith("get") && (method.getParameterTypes().length == 0)) {
+				try {
 					final Object result = method.invoke(obj);
 
-					if (result instanceof Collection)
-					{
+					if (result instanceof Collection) {
 						((Collection<?>) result).size();
 					}
 
 					System.out.println(result);
-				}
-				catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
-				{
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 					// silently ignore errors here
-					logger.info(String.format("Exception while invoking %s.%s", obj.getClass().getName(), method.getName()), e);
+					logger.info(
+							String.format("Exception while invoking %s.%s", obj.getClass().getName(), method.getName()),
+							e);
 				}
 			}
 		}

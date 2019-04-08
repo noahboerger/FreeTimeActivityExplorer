@@ -3,7 +3,7 @@ package org.dhbw.mosbach.ai.freetimeactivityexplorer.general;
 import org.dhbw.mosbach.ai.freetimeactivityexplorer.apis.weather.WeatherData;
 
 public class ReturnActivityDTO {
-	
+
 	private String status;
 
 	private String cityName;
@@ -11,7 +11,8 @@ public class ReturnActivityDTO {
 	private WeatherData weatherData;
 	private Activity[] activity;
 
-	public ReturnActivityDTO(String status ,String cityName, Coordinates cityLocation, WeatherData weatherData, Activity[] activity) {
+	public ReturnActivityDTO(String status, String cityName, Coordinates cityLocation, WeatherData weatherData,
+			Activity[] activity) {
 		this.status = status;
 		this.cityName = cityName;
 		this.cityLocation = cityLocation;
